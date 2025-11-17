@@ -24,7 +24,6 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: CustomService2-auth
       - name: CustomService2-db
       - name: CustomService2-connectivity
       - name: CustomService2-destination
@@ -50,7 +49,6 @@ modules:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
-      - name: CustomService2-auth
       - name: CustomService2-destination
     provides:
       - name: app-api
@@ -59,20 +57,7 @@ modules:
           app-uri: ${default-uri}
 
 resources:
-  - name: CustomService2-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: CustomService2-${org}-${space}
-        tenant-mode: dedicated
-        oauth2-configuration:
-          redirect-uris:
-            - https://*~{app-api/app-uri}/**
-    requires:
-      - name: app-api
+  
   - name: CustomService2-db
     type: com.sap.xs.hdi-container
     parameters:
